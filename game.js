@@ -23,10 +23,18 @@ app.configure('development', function(){
 
 
 var socket = io.listen(app);
+var people = {};
 
 socket.on('connection', function(client) {
-  client.on('message', function(message){ sys.puts(client.sessionId); sys.puts(util.inspect(message)); sys.puts(' '); }) 
-  client.on('disconnect', function(){ sys.puts("client disconnected"); }) 
+  client.on('message', function(message){ 
+    // Update the locations of all known people on the map
+    people[client.sessionId] = message;
+    // set timeout variable somewhere
+
+    // debug crap
+	sys.puts(client.sessionId); sys.puts(util.inspect(message)); sys.puts(' '); 
+  });
+  client.on('disconnect', function(){ sys.puts("client disconnected"); });
 });
 
 

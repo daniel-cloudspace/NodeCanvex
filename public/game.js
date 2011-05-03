@@ -1161,6 +1161,9 @@ window.addEventListener('load', function()
 
 
 
+
+// Socket.IO / node.js updaters
+
 var socket = new io.Socket(null, {port: 8080, rememberTransport: false});
 socket.connect();
 socket.on('connect', function(){ console.log('connected'); }) 
