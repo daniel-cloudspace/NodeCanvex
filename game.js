@@ -23,12 +23,12 @@ app.configure('development', function(){
 
 
 var socket = io.listen(app);
-var people = {};
+var players = {};
 
 socket.on('connection', function(client) {
   client.on('message', function(message){ 
     // Update the locations of all known people on the map
-    people[client.sessionId] = message;
+    players[client.sessionId] = message;
     // set timeout variable somewhere
 
     // debug crap
@@ -36,5 +36,9 @@ socket.on('connection', function(client) {
   });
   client.on('disconnect', function(){ sys.puts("client disconnected"); });
 });
+
+setInterval(function() {
+	socket.broadcast(players);
+}, 500);
 
 

@@ -1163,11 +1163,17 @@ window.addEventListener('load', function()
 
 
 // Socket.IO / node.js updaters
+var players = {};
 
 var socket = new io.Socket(null, {port: 8080, rememberTransport: false});
 socket.connect();
 socket.on('connect', function(){ console.log('connected'); }) 
-socket.on('message', function(message){ console.log('message: ' + message); }) 
+socket.on('message', function(message){ 
+	for (var i in message) {
+		players[i] = message[i];
+	}
+	console.log(players);
+}) 
 socket.on('disconnect', function(){ console.log('disconnected'); }) 
 
 window.setInterval(function() {
