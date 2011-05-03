@@ -1,0 +1,187 @@
+<html>
+<head>
+  <script src="http://localhost:8080/socket.io/socket.io.js"></script> 
+  <script> 
+   var socket = new io.Socket(null, {port: 8080, rememberTransport: false}); 
+   socket.connect();
+   socket.on('connect', function(){ document.getElementById('derp').appendChild("connected!"); }) 
+   socket.on('message', function(){ document.getElementById('derp').appendChild("message received"); }) 
+   socket.on('disconnect', function(){ document.getElementById('derp').appendChild("disconnecting"); }) 
+  
+   function doSomethin() {
+    var durpject = { key1: 'value1', key2: 'value2', key3: { hashedkey: 'hashofavalue' }};
+    socket.send(durpject);
+   }
+  </script> 
+  
+  <div id='derp'>asdf</div>
+  <div id='nothin'><a href='#' onClick='doSomethin(); return false;'>click meh</a></div>
+ <!-- 
+  <style type="text/css"><![CDATA[
+    html {
+      background: black;
+      height: 100%;
+    }
+    body {
+      height: 100%;
+      margin: 0;
+    }
+    #debug {
+      display: none;
+      }
+
+    #size, #footer {
+      text-align: center;
+      color: white;
+      font-family: sans-serif;
+      font-size: 0.7em;
+      color: #aa6;
+    }
+    #footer a {
+      text-decoration: none;
+      color: #aa6;
+    }
+
+    #size a {
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #help_bg {
+      position: absolute;
+      line-height: normal;
+      color: white;
+      background: black;
+      opacity: 0.5;
+      visibility: hidden;
+    }
+    #help_fg {
+      padding: 10px;
+      font-family: sans-serif;
+    }
+    #help_fg .key {
+      font-style: italic;
+      color: #ffa;
+    }
+    #help_fg .key:after {
+      content: " ]]>&ndash;<![CDATA[ ";
+    }
+
+
+    #ui object, #ui canvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    .ui_1280 .h0 { height: 32px;   }
+    .ui_1280 .h1 { height: 960px;  }
+    .ui_1280 .h2 { height: 144px;  }
+    .ui_1280 .w0 { width:  32px;   }
+    .ui_1280 .w1 { width:  1280px; }
+
+    .ui_640 .h0 { height: 16px;  }
+    .ui_640 .h1 { height: 480px; }
+    .ui_640 .h2 { height: 72px;  }
+    .ui_640 .w0 { width:  16px;  }
+    .ui_640 .w1 { width:  640px; }
+
+    .ui_320 .h0 { height: 8px;   }
+    .ui_320 .h1 { height: 240px; }
+    .ui_320 .h2 { height: 36px;  }
+    .ui_320 .w0 { width:  8px;   }
+    .ui_320 .w1 { width:  320px; }
+  ]]></style>
+</head>
+
+<body>
+
+    <div style="margin: auto; height: 100%; display: table">
+      <div style="display: table-cell; vertical-align: middle">
+
+        <div id="size">
+
+          Size:
+          <a onclick="change_res(160,120, 'ui_320')" title="160&times;120 stretched to 320&times;240">tiny</a>
+          <a onclick="change_res(320,240, 'ui_320')" title="320&times;240">small</a>
+          <a onclick="change_res(320,240, 'ui_640')" title="320&times;240 stretched to 640&times;480">stretch</a>
+          <a onclick="change_res(640,480, 'ui_640')" title="640&times;480">large</a>
+          <a onclick="change_res(1280,960, 'ui_1280')" title="1280&times;960">ultra</a>
+          &nbsp;
+
+          <a onmouseover="$('help_bg').style.visibility='visible'" onmouseout="$('help_bg').style.visibility='hidden'">Help</a>
+        </div>
+
+        <div id="ui" style="display: table; line-height: 0; margin: auto" class="ui_320">
+          <div style="display: table-row">
+            <div style="display: table-cell" class="h0">
+              <object data="textures/misc/ui_top.svgz" type="image/svg+xml" id="uitop"/>
+            </div>
+          </div>
+
+          <div id="uic" style="display: table">
+            <div style="display:table-cell" class="w0 h1">
+              <object data="textures/misc/ui_left.svgz" type="image/svg+xml" id="uileft"/>
+            </div>
+            <div style="display:table-cell" class="w1 h1">
+              <div id="help_bg" class="w1 h1">
+                <div id="help_fg">
+                  Keys:
+                  <ul>
+
+                    <li><span class="key">Arrow keys</span> walk forwards, backwards, rotate</li>
+                    <li><span class="key">Space bar</span> jump</li>
+                    <li><span class="key"><tt>,</tt> and <tt>.</tt></span> strafe left and right</li>
+
+                    <li><span class="key"><tt>x</tt> and <tt>c</tt></span> strafe left and right</li>
+                    <li><span class="key">Page up, page down, home</span> look up, down, centre</li>
+                    <li><span class="key">Pause</span> pause</li>
+
+                  </ul>
+                </div>
+              </div>
+              <canvas id="c" width="320" height="240"/>
+            </div>
+            <div style="display:table-cell" class="w0 h1">
+              <object data="textures/misc/ui_right.svgz" type="image/svg+xml" id="uiright"/>
+            </div>
+          </div>
+
+          <div style="display:table-row">
+            <div style="display: table-cell" class="h2">
+              <object data="textures/misc/ui_bottom.svgz" type="image/svg+xml" id="uibottom"/>
+            </div>
+          </div>
+        </div>
+
+        <div id="footer">
+          Canvex - <a href="http://canvex.lazyilluminati.com">http://canvex.lazyilluminati.com</a> - excors+canvex&#64;gmail.com
+        </div>
+
+        <div id="fpsgraph_container" style="width: 640px; height: 320px; display: none; margin: auto"/>
+
+        <div id="xdm_container" style="visibility: hidden; height: 0; position: absolute"/>
+        <div id="opera_hack" style="position: absolute"/>
+
+      </div>
+    </div>
+
+    <div style="background:#008000; width: 100%; position: absolute; bottom: 0" id="debug">
+      <div style="margin: 5px">
+
+        <div>
+          <button id="pause">Pause</button>
+          FPS: <span id="framerate"/>
+        </div>
+
+        <div>
+          <b>Debug messages:</b>
+          <input type="text" id="status" size="100"/>
+
+        </div>
+      </div>
+    </div>
+
+  </body>
+<--!>
+</html>
+
