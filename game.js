@@ -29,16 +29,12 @@ socket.on('connection', function(client) {
   client.on('message', function(message){ 
     // Update the locations of all known people on the map
     players[client.sessionId] = message;
-    // set timeout variable somewhere
-
-    // debug crap
-	sys.puts(client.sessionId); sys.puts(util.inspect(message)); sys.puts(' '); 
   });
   client.on('disconnect', function(){ sys.puts("client disconnected"); });
 });
 
 setInterval(function() {
 	socket.broadcast(players);
-}, 500);
+}, 50);
 
 

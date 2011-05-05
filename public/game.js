@@ -1162,29 +1162,57 @@ window.addEventListener('load', function()
 
 
 
-// Socket.IO / node.js updaters
-var players = {};
-
-var socket = new io.Socket(null, {port: 8080, rememberTransport: false});
-socket.connect();
-socket.on('connect', function(){ console.log('connected'); }) 
-socket.on('message', function(message){ 
-	for (var i in message) {
-		players[i] = message[i];
-	}
-	console.log(players);
-}) 
-socket.on('disconnect', function(){ console.log('disconnected'); }) 
-
-window.setInterval(function() {
- socket.send({x: player.x, y: player.y, z: player.z});
-}, 500);
-
-
-
-
-
-
 
 
 })(); // [end private]
+
+
+
+
+//var socketstuffi = function() { function 
+  // Socket.IO / node.js updaters
+
+var players = {};
+  
+  var socket = new io.Socket(null, {port: 8080, rememberTransport: false});
+  socket.connect();
+  socket.on('connect', function(){ console.log('connected'); }) 
+  socket.on('message', function(message){ 
+  	for (var i in message) {
+//		sprites[0].x = message[i].x;
+//		sprites[0].y = message[i].y;
+//		sprites[0].z = message[i].z;
+
+		var player;
+		if (typeof players[i] == "undefined") {
+			player = {
+				spritedef: sprites[0].spritedef, 
+				sector: sprites[0].sector,
+				a: 3.14159265358979
+			};
+			players[i] = player;
+			sprites.push(player);
+			sprites[sprites.length-1].sector.sprites[sprites.length-1] = sprites[sprites.length-1];
+//			sectors[3].sprites[sprites.length-1] = 1
+		} else {
+			player = players[i];
+		}
+
+		player.x = message[i].x;
+		player.y = message[i].y;
+		player.z = message[i].z;
+
+  	}
+  //	console.log(players);
+  }) 
+  socket.on('disconnect', function(){ console.log('disconnected'); }) 
+  
+  window.setInterval(function() {
+   socket.send({x: player.x, y: player.y, z: player.z});
+  }, 50);
+  console.log('socketing');
+//}
+
+//setTimeout(socketstuff, 5000);
+
+
